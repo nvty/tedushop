@@ -13,7 +13,7 @@ namespace TeduShop.Data.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201807230314294_initialDB"; }
+            get { return "201807251209340_initialDB"; }
         }
         
         string IMigrationMetadata.Source
