@@ -12,41 +12,53 @@ using TeduShop.Service;
 using System.Web.Mvc;
 using System.Web.Http;
 using Autofac.Integration.WebApi;
+using Microsoft.AspNet.Identity;
+using System.Web;
+using Microsoft.Owin.Security.DataProtection;
+using TeduShop.Model.Models;
 
 [assembly: OwinStartup(typeof(TeduShop.Web.App_Start.Startup))]
 
 namespace TeduShop.Web.App_Start
 {
-    public class Startup
+    public partial class Startup
     {
         public void Configuration(IAppBuilder app)
         {
             ConfigAutofac(app);
+            ConfigureAuth(app);
         }
 
         private void ConfigAutofac(IAppBuilder app)
         {
-            var buider = new ContainerBuilder();
-            buider.RegisterControllers(Assembly.GetExecutingAssembly());
+            var builder = new ContainerBuilder();
+            builder.RegisterControllers(Assembly.GetExecutingAssembly());
 
-            buider.RegisterApiControllers(Assembly.GetExecutingAssembly());
+            builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
 
-            buider.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerRequest();
-            buider.RegisterType<DbFactory>().As<IDbFactory>().InstancePerRequest();
+            builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerRequest();
+            builder.RegisterType<DbFactory>().As<IDbFactory>().InstancePerRequest();
 
-            buider.RegisterType<TeduShopDbContext>().AsSelf().InstancePerRequest();
+            builder.RegisterType<TeduShopDbContext>().AsSelf().InstancePerRequest();
+
+            //Asp.net Identity
+            builder.RegisterType<ApplicationUserStore>().As<IUserStore<ApplicationUser>>().InstancePerRequest();
+            builder.RegisterType<ApplicationUserManager>().AsSelf().InstancePerRequest();
+            builder.RegisterType<ApplicationSignInManager>().AsSelf().InstancePerRequest();
+            builder.Register(c => HttpContext.Current.GetOwinContext().Authentication).InstancePerRequest();
+            builder.Register(c => app.GetDataProtectionProvider()).InstancePerRequest();
 
             //Repository
-            buider.RegisterAssemblyTypes(typeof(PostCategoryRepository).Assembly)
+            builder.RegisterAssemblyTypes(typeof(PostCategoryRepository).Assembly)
                 .Where(t => t.Name.EndsWith("Repository"))
                 .AsImplementedInterfaces().InstancePerRequest();
 
             //Service
-            buider.RegisterAssemblyTypes(typeof(PostCategoryService).Assembly)
+            builder.RegisterAssemblyTypes(typeof(PostCategoryService).Assembly)
                .Where(t => t.Name.EndsWith("Service"))
                .AsImplementedInterfaces().InstancePerRequest();
 
-            Autofac.IContainer container = buider.Build();
+            Autofac.IContainer container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
 
             GlobalConfiguration.Configuration.DependencyResolver = new AutofacWebApiDependencyResolver((IContainer)container);
