@@ -35,6 +35,7 @@ namespace TeduShop.Web.Api
             });
         }
 
+        [Route("add")]
         public HttpResponseMessage Post(HttpRequestMessage request, PostCategory postCategory)
         {
             return CreateHttpRespone(request, () =>
@@ -55,7 +56,7 @@ namespace TeduShop.Web.Api
             });
         }
 
-       
+        [Route("update")]
         public HttpResponseMessage Put(HttpRequestMessage request, PostCategory postCategory)
         {
             return CreateHttpRespone(request, () =>
@@ -76,6 +77,7 @@ namespace TeduShop.Web.Api
             });
         }
 
+        [Route("delete")]
         public HttpResponseMessage Delete(HttpRequestMessage request, int id)
         {
             return CreateHttpRespone(request, () =>
