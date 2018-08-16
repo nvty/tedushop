@@ -24,7 +24,7 @@ namespace TeduShop.Web.Api
         [Route("getall")]
         public HttpResponseMessage Get(HttpRequestMessage request)
         {
-            return CreateHttpRespone(request, () =>
+            return CreateHttpResponse(request, () =>
             {
                
                     var listcategory = _postCategoryService.GetAll();
@@ -38,7 +38,7 @@ namespace TeduShop.Web.Api
         [Route("add")]
         public HttpResponseMessage Post(HttpRequestMessage request, PostCategory postCategory)
         {
-            return CreateHttpRespone(request, () =>
+            return CreateHttpResponse(request, () =>
             {
                 HttpResponseMessage response = null;
                 if (ModelState.IsValid)
@@ -59,7 +59,7 @@ namespace TeduShop.Web.Api
         [Route("update")]
         public HttpResponseMessage Put(HttpRequestMessage request, PostCategory postCategory)
         {
-            return CreateHttpRespone(request, () =>
+            return CreateHttpResponse(request, () =>
             {
                 HttpResponseMessage response = null;
                 if (ModelState.IsValid)
@@ -80,7 +80,7 @@ namespace TeduShop.Web.Api
         [Route("delete")]
         public HttpResponseMessage Delete(HttpRequestMessage request, int id)
         {
-            return CreateHttpRespone(request, () =>
+            return CreateHttpResponse(request, () =>
             {
                 HttpResponseMessage response = null;
                 if (ModelState.IsValid)
