@@ -27,7 +27,6 @@ namespace TeduShop.Web.Api
         }
 
         #endregion
-
         [Route("getallparents")]
         [HttpGet]
         public HttpResponseMessage GetAll(HttpRequestMessage request)

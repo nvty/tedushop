@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using System.Diagnostics;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -21,13 +19,12 @@ namespace TeduShop.Web.Infrastructure.Core
             this._errorService = errorService;
         }
 
-        protected HttpResponseMessage CreateHttpResponse(HttpRequestMessage requestMessage,Func<HttpResponseMessage> function)
+        protected HttpResponseMessage CreateHttpResponse(HttpRequestMessage requestMessage, Func<HttpResponseMessage> function)
         {
             HttpResponseMessage response = null;
             try
             {
                 response = function.Invoke();
-
             }
             catch (DbEntityValidationException ex)
             {
@@ -52,7 +49,6 @@ namespace TeduShop.Web.Infrastructure.Core
                 LogError(ex);
                 response = requestMessage.CreateResponse(HttpStatusCode.BadRequest, ex.Message);
             }
-
             return response;
         }
 
@@ -61,17 +57,14 @@ namespace TeduShop.Web.Infrastructure.Core
             try
             {
                 Error error = new Error();
-                error.CreatedDate= DateTime.Now;
-                error.Message= ex.Message;
+                error.CreatedDate = DateTime.Now;
+                error.Message = ex.Message;
                 error.StackTrace = ex.StackTrace;
-
                 _errorService.Create(error);
                 _errorService.Save();
             }
             catch
             {
-
-                
             }
         }
     }
