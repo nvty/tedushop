@@ -8,7 +8,7 @@
         $scope.page = 0;
         $scope.pagesCount = 0;
         $scope.getProducts = getProducts;
-        $scope.getListProductCategories = getListProductCategories;
+        //$scope.getListProductCategories = getListProductCategories;
         $scope.keyword = '';
 
 
@@ -104,14 +104,14 @@
             });
         }
        
-        function getListProductCategories() {
-            apiService.get('api/productcategory/getallparents', function (result) {
-                $scope.productCategories = result.data;
-            }, function (error) {
-                console.log('Get product category failed');
-            });
-        }
-        $scope.getListProductCategories();
+        //function getListProductCategories() {
+        //    apiService.get('api/productcategory/getallparents', function (result) {
+        //        $scope.productCategories = result.data;
+        //    }, function (error) {
+        //        console.log('Get product category failed');
+        //    });
+        //}
+        //$scope.getListProductCategories();
         $scope.getProducts();
     }
 })(angular.module('tedushop.products'));

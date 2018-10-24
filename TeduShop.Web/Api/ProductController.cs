@@ -124,8 +124,10 @@ namespace TeduShop.Web.Api
                 else
                 {
                     var dbProduct = _productService.GetById(productVm.ID);
-                    dbProduct.UpdatedDate = DateTime.Now;
+
                     dbProduct.UpdateProduct(productVm);
+                    dbProduct.UpdatedDate = DateTime.Now;
+
                     _productService.Update(dbProduct);
                     _productService.Save();
 
@@ -136,7 +138,6 @@ namespace TeduShop.Web.Api
                 return response;
             });
         }
-
         [Route("delete")]
         [HttpDelete]
         [AllowAnonymous]

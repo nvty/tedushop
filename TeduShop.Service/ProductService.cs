@@ -101,11 +101,10 @@ namespace TeduShop.Service
         public void Update(Product Product)
         {
             _productRepository.Update(Product);
-
             if (!string.IsNullOrEmpty(Product.Tags))
             {
                 string[] tags = Product.Tags.Split(',');
-                for (int i = 0; i < tags.Length; i++)
+                for (var i = 0; i < tags.Length; i++)
                 {
                     var tagId = StringHelper.ToUnsignString(tags[i]);
                     if (_tagRepository.Count(x => x.ID == tagId) == 0)
@@ -116,15 +115,14 @@ namespace TeduShop.Service
                         tag.Type = CommonConstants.ProductTag;
                         _tagRepository.Add(tag);
                     }
-
+                    _productTagRepository.DeleteMulti(x => x.ProductID == Product.ID);
                     ProductTag productTag = new ProductTag();
                     productTag.ProductID = Product.ID;
                     productTag.TagID = tagId;
                     _productTagRepository.Add(productTag);
                 }
-                
+
             }
-            _unitOfWork.Commit();
         }
     }
 }
